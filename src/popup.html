@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>SinBlocker</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body class="w-[340px] p-5">
+    <div class="mb-5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600 text-white" aria-hidden="true"><svg class="block h-6 w-6" viewBox="0 0 203 241" focusable="false"><use href="icons/sinblocker.svg#sinblocker-shield"></use></svg></span>
+        <div><p class="text-base font-bold tracking-[-0.02em] text-slate-900">SinBlocker</p><p class="m-0 text-xs text-slate-600">Media blocking</p></div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggleSwitch" aria-label="Toggle global media blocking" />
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="mb-3 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_2px_8px_rgba(15,23,42,0.03)] max-[560px]:p-5">
+      <span id="statusPill" class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold bg-slate-100 text-slate-600">Off</span>
+      <p id="statusMessage" class="mt-2 text-lg font-semibold leading-[1.4] tracking-[-0.02em] text-slate-900">Loading…</p>
+      <p id="statusDetail" class="mt-1 text-xs text-slate-600 [overflow-wrap:anywhere]"></p>
+    </div>
+
+    <div class="mb-3">
+      <button type="button" id="primaryAction" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50" disabled>
+        …
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-2 border-t border-slate-200 pt-3">
+      <p id="siteHint" class="m-0 text-xs text-slate-600">
+        Tip: right-click media to show one item.
+      </p>
+      <div class="flex items-center justify-between gap-2">
+        <button type="button" id="openOptions" class="w-auto cursor-pointer border-none bg-transparent px-1 py-0.5 text-blue-600 hover:bg-transparent hover:underline">
+          Open settings
+        </button>
+        <kbd>Alt+I</kbd>
+      </div>
+    </div>
+
+    <div id="toast" class="toast pointer-events-none fixed bottom-4 left-1/2 z-[1000] max-w-[90%] rounded-[10px] px-4 py-2 text-center text-[13px] text-white opacity-0" role="status" aria-live="polite"></div>
+
+    <script src="domain.js"></script>
+    <script src="url_rules.js"></script>
+    <script src="safesearch.js"></script>
+    <script src="site_categories.js"></script>
+    <script src="default_sites.js"></script>
+    <script src="store.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

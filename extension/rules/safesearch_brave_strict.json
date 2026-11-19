@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "priority": 2,
+    "action": { "type": "allow" },
+    "condition": {
+      "regexFilter": "^https?://search\\.brave\\.com/.*[?&]safesearch=strict(?:&|$)",
+      "resourceTypes": ["main_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "addOrReplaceParams": [{ "key": "safesearch", "value": "strict" }]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://search\\.brave\\.com/(search|images|videos)(?:[/?].*)?$",
+      "resourceTypes": ["main_frame"]
+    }
+  }
+]

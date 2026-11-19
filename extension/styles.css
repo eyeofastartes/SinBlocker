@@ -1,0 +1,112 @@
+@scope (html.ivb-hide-images) to (
+  .g-recaptcha[data-sitekey],
+  .grecaptcha-badge,
+  .cf-turnstile[data-sitekey],
+  altcha-widget,
+  div:has(> input[type="hidden"][id^="cf-chl-widget-"][id$="_response"]),
+  iframe:is(
+    [src^="https://www.google.com/recaptcha/api2/anchor?"],
+    [src^="https://www.google.com/recaptcha/api2/bframe?"],
+    [src^="https://www.google.com/recaptcha/enterprise/anchor?"],
+    [src^="https://www.google.com/recaptcha/enterprise/bframe?"],
+    [src^="https://www.recaptcha.net/recaptcha/api2/anchor?"],
+    [src^="https://www.recaptcha.net/recaptcha/api2/bframe?"],
+    [src^="https://www.recaptcha.net/recaptcha/enterprise/anchor?"],
+    [src^="https://www.recaptcha.net/recaptcha/enterprise/bframe?"],
+    [src^="https://recaptcha.google.com/recaptcha/api2/anchor?"],
+    [src^="https://recaptcha.google.com/recaptcha/api2/bframe?"],
+    [src^="https://recaptcha.google.com/recaptcha/enterprise/anchor?"],
+    [src^="https://recaptcha.google.com/recaptcha/enterprise/bframe?"],
+    [src^="//www.google.com/recaptcha/api2/anchor?"],
+    [src^="//www.google.com/recaptcha/api2/bframe?"],
+    [src^="//www.google.com/recaptcha/enterprise/anchor?"],
+    [src^="//www.google.com/recaptcha/enterprise/bframe?"],
+    [src^="//www.recaptcha.net/recaptcha/api2/anchor?"],
+    [src^="//www.recaptcha.net/recaptcha/api2/bframe?"],
+    [src^="//www.recaptcha.net/recaptcha/enterprise/anchor?"],
+    [src^="//www.recaptcha.net/recaptcha/enterprise/bframe?"],
+    [src^="//recaptcha.google.com/recaptcha/api2/anchor?"],
+    [src^="//recaptcha.google.com/recaptcha/api2/bframe?"],
+    [src^="//recaptcha.google.com/recaptcha/enterprise/anchor?"],
+    [src^="//recaptcha.google.com/recaptcha/enterprise/bframe?"],
+    [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/"],
+    [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/"],
+    [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/turnstile/"],
+    [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/"],
+    [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/"],
+    [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/turnstile/"]
+  )
+) {
+  /* opacity:0 keeps img/video clickable so Chrome image/video context menus work */
+  :scope img:not([class*="Emoji"]):not([class*="avatar"]):not([class*="Icon"]):not([src*="emoji"]):not(.ivb-shown),
+  :scope video:not(.ivb-shown) {
+    opacity: 0 !important;
+    pointer-events: auto !important;
+  }
+
+  :scope img.ivb-shown,
+  :scope video.ivb-shown {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  /* Keep <picture> in the layout so nested <img> can still be right-clicked */
+  :scope embed,
+  :scope object,
+  :scope iframe {
+    display: none !important;
+  }
+
+  :scope :is(
+    [style*="background-image"],
+    [style*="background: url"]
+  ):not([class*="Icon"]):not(:has(
+    .g-recaptcha[data-sitekey],
+    .grecaptcha-badge,
+    .cf-turnstile[data-sitekey],
+    altcha-widget,
+    input[type="hidden"][id^="cf-chl-widget-"][id$="_response"],
+    iframe:is(
+      [src^="https://www.google.com/recaptcha/api2/anchor?"],
+      [src^="https://www.google.com/recaptcha/api2/bframe?"],
+      [src^="https://www.google.com/recaptcha/enterprise/anchor?"],
+      [src^="https://www.google.com/recaptcha/enterprise/bframe?"],
+      [src^="https://www.recaptcha.net/recaptcha/api2/anchor?"],
+      [src^="https://www.recaptcha.net/recaptcha/api2/bframe?"],
+      [src^="https://www.recaptcha.net/recaptcha/enterprise/anchor?"],
+      [src^="https://www.recaptcha.net/recaptcha/enterprise/bframe?"],
+      [src^="https://recaptcha.google.com/recaptcha/api2/anchor?"],
+      [src^="https://recaptcha.google.com/recaptcha/api2/bframe?"],
+      [src^="https://recaptcha.google.com/recaptcha/enterprise/anchor?"],
+      [src^="https://recaptcha.google.com/recaptcha/enterprise/bframe?"],
+      [src^="//www.google.com/recaptcha/api2/anchor?"],
+      [src^="//www.google.com/recaptcha/api2/bframe?"],
+      [src^="//www.google.com/recaptcha/enterprise/anchor?"],
+      [src^="//www.google.com/recaptcha/enterprise/bframe?"],
+      [src^="//www.recaptcha.net/recaptcha/api2/anchor?"],
+      [src^="//www.recaptcha.net/recaptcha/api2/bframe?"],
+      [src^="//www.recaptcha.net/recaptcha/enterprise/anchor?"],
+      [src^="//www.recaptcha.net/recaptcha/enterprise/bframe?"],
+      [src^="//recaptcha.google.com/recaptcha/api2/anchor?"],
+      [src^="//recaptcha.google.com/recaptcha/api2/bframe?"],
+      [src^="//recaptcha.google.com/recaptcha/enterprise/anchor?"],
+      [src^="//recaptcha.google.com/recaptcha/enterprise/bframe?"],
+      [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/"],
+      [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/"],
+      [src^="https://challenges.cloudflare.com/cdn-cgi/challenge-platform/turnstile/"],
+      [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/h/g/turnstile/"],
+      [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/h/b/turnstile/"],
+      [src^="//challenges.cloudflare.com/cdn-cgi/challenge-platform/turnstile/"]
+    )
+  )) {
+    display: none !important;
+  }
+
+  :scope [style*="background-image"]:not([class*="Icon"]) {
+    background-image: none !important;
+  }
+
+  :scope [style*="background: url"]:not([class*="Icon"]) {
+    background: none !important;
+  }
+}

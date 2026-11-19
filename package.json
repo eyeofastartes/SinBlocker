@@ -1,0 +1,25 @@
+{
+  "name": "sinblocker",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Chrome Manifest V3 extension that hides images, videos, and background media on the sites you choose.",
+  "scripts": {
+    "build": "npm run clear && npm run src-copy && npm run src-css && npm run src-minify-html",
+    "watch": "npm run clear && node scripts/watch.mjs",
+    "clear": "rm -f extension/popup.html extension/popup.js extension/options.html extension/options.js extension/onboarding.html extension/onboarding.js extension/background.js extension/content.js extension/store.js extension/main.css",
+    "src-css": "tailwindcss -i src/input.css -o extension/main.css --minify",
+    "src-copy": "cp src/*.html src/*.js extension/",
+    "src-minify-html": "html-minifier --collapse-whitespace --remove-comments --output extension/options.html extension/options.html && html-minifier --collapse-whitespace --remove-comments --output extension/popup.html extension/popup.html",
+    "src-keygen": "python3 scripts/package.py keygen",
+    "src-package": "npm run build && python3 scripts/package.py pack"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "@tailwindcss/cli": "4.3.3",
+    "html-minifier": "^4.0.0",
+    "tailwindcss": "4.3.3"
+  }
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "priority": 2,
+    "action": { "type": "allow" },
+    "condition": {
+      "regexFilter": "^https?://([^/]+\\.)?google\\.[^/]+/.*[?&]safe=active(?:&|$)",
+      "resourceTypes": ["main_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "addOrReplaceParams": [{ "key": "safe", "value": "active" }]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://([^/]+\\.)?google\\.[^/]+/(search|images|webhp)(?:[/?].*)?$",
+      "resourceTypes": ["main_frame"]
+    }
+  }
+]

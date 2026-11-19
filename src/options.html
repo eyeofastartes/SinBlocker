@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth scroll-pt-6">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Settings - SinBlocker</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body class="min-h-screen">
+    <div id="lockScreen" class="lock-screen">
+      <form id="unlockForm" class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] w-full max-w-[420px] p-8 max-[560px]:p-5">
+        <div class="mb-7 flex items-center gap-3"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600 text-white" aria-hidden="true"><svg class="block h-6 w-6" viewBox="0 0 203 241" focusable="false"><use href="icons/sinblocker.svg#sinblocker-shield"></use></svg></span><span class="text-base font-bold tracking-[-0.02em] text-slate-900">SinBlocker</span></div>
+        <h1>Settings are protected</h1>
+        <p>Enter your master password to access settings. Blocking stays unchanged.</p>
+        <label class="my-2 block text-[13px] font-semibold" for="masterPassword">Master password</label>
+        <input type="password" id="masterPassword" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px] focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1" autocomplete="current-password" aria-describedby="unlockError" />
+        <p id="unlockError" class="mt-2 text-xs text-red-700 min-h-[1.2em]" role="alert"></p>
+        <button type="submit" class="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Unlock settings</button>
+      </form>
+      <form id="challengeForm" class="w-full max-w-[420px] rounded-2xl border border-slate-200 bg-white p-8 max-[560px]:p-5" hidden>
+        <h1 id="challengeTitle"></h1>
+        <p id="challengeDescription"></p>
+        <p id="challengeProgress" class="mt-3 text-xs text-slate-600" role="status" aria-live="polite"></p>
+        <div id="challengePrompt" class="my-2 block text-base font-semibold"></div>
+        <input type="text" id="challengeAnswer" inputmode="numeric" autocomplete="off" spellcheck="false" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px]" aria-labelledby="challengePrompt" aria-describedby="challengeError" />
+        <div id="challengeDoors" class="grid grid-cols-10 gap-1" role="group" aria-labelledby="challengePrompt" aria-describedby="challengeError" hidden></div>
+        <p id="challengeError" class="mt-2 min-h-[1.2em] text-xs text-red-700" role="alert"></p>
+        <button id="challengeConfirm" type="button" class="absolute cursor-pointer rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] hover:bg-blue-700">Confirm</button>
+      </form>
+    </div>
+    <div id="setPasswordModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="passwordTitle" aria-describedby="passwordDescription" hidden>
+      <div class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] w-full max-w-[440px] p-7 max-h-[calc(100vh-48px)] overflow-y-auto max-[560px]:p-5">
+        <h2 id="passwordTitle">Protect your settings</h2>
+        <p id="passwordDescription">Choose a password to protect settings and popup controls.</p>
+        <form id="setPasswordForm">
+          <label class="my-2 block text-[13px] font-semibold" for="newPassword">Password</label>
+          <input type="password" id="newPassword" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px] focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1" autocomplete="new-password" aria-describedby="setPasswordError" />
+          <label class="my-2 block text-[13px] font-semibold" for="confirmPassword">Confirm password</label>
+          <input type="password" id="confirmPassword" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px] focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1" autocomplete="new-password" aria-describedby="setPasswordError" />
+          <p id="setPasswordError" class="mt-2 text-xs text-red-700 min-h-[1.2em]" role="alert"></p>
+          <div class="mt-5 flex justify-end gap-3">
+            <button type="button" id="cancelSetPassword" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-900 min-h-[44px] hover:enabled:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50">Cancel</button>
+            <button type="submit" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Set password</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="optionsPage" class="mx-auto max-w-[1180px] p-6 max-[560px]:px-4 max-[560px]:py-5" hidden>
+      <header class="flex items-center justify-between gap-4 border-b border-slate-200 pb-5 max-[560px]:items-start">
+        <div class="flex items-center gap-3"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600 text-white" aria-hidden="true"><svg class="block h-6 w-6" viewBox="0 0 203 241" focusable="false"><use href="icons/sinblocker.svg#sinblocker-shield"></use></svg></span><div><p class="text-base font-bold tracking-[-0.02em] text-slate-900">SinBlocker</p><p class="m-0 text-xs text-slate-600">Less distraction. More focus.</p></div></div>
+        <p class="m-0 text-xs text-slate-600 max-[560px]:max-w-[120px] max-[560px]:text-right">Changes save automatically.<br />Bulk edits and URL rules need saving.</p>
+      </header>
+      <div class="mt-6 grid grid-cols-[168px_minmax(0,1fr)] gap-7 max-[900px]:grid-cols-1 max-[900px]:gap-6">
+        <aside class="sticky top-6 self-start max-[900px]:static">
+          <p class="text-[11px] font-bold uppercase tracking-[0.1em] text-blue-600 max-[900px]:hidden">Preferences</p>
+          <nav class="mt-4 mb-6 flex flex-col flex-wrap gap-1.5 max-[900px]:flex-row max-[900px]:m-0" aria-label="Settings sections">
+            <a href="#sites" class="flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:no-underline aria-[current=location]:bg-blue-50 aria-[current=location]:text-blue-600 aria-[current=location]:no-underline max-[560px]:p-2.5 max-[560px]:gap-1.5 max-[560px]:text-[13px]"><span class="text-[11px] opacity-70" aria-hidden="true">01</span>Sites</a>
+            <a href="#url-rules" class="flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:no-underline aria-[current=location]:bg-blue-50 aria-[current=location]:text-blue-600 aria-[current=location]:no-underline max-[560px]:p-2.5 max-[560px]:gap-1.5 max-[560px]:text-[13px]"><span class="text-[11px] opacity-70" aria-hidden="true">02</span>URL Rules</a>
+            <a href="#safesearch" class="flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:no-underline aria-[current=location]:bg-blue-50 aria-[current=location]:text-blue-600 aria-[current=location]:no-underline max-[560px]:p-2.5 max-[560px]:gap-1.5 max-[560px]:text-[13px]"><span class="text-[11px] opacity-70" aria-hidden="true">03</span>SafeSearch</a>
+            <a href="#security" class="flex items-center gap-3 rounded-[10px] px-3 py-2.5 font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-600 hover:no-underline aria-[current=location]:bg-blue-50 aria-[current=location]:text-blue-600 aria-[current=location]:no-underline max-[560px]:p-2.5 max-[560px]:gap-1.5 max-[560px]:text-[13px]"><span class="text-[11px] opacity-70" aria-hidden="true">04</span>Security</a>
+          </nav>
+          <p class="m-0 text-xs text-slate-600 rounded-xl border border-slate-200 p-3 max-[900px]:hidden">Use the toolbar popup to turn media blocking on or off.</p>
+        </aside>
+        <main>
+          <header class="mb-6"><h1 class="mb-2 text-2xl tracking-[-0.04em]">Your focus, your rules.</h1><p>Choose what stays visible and keep your browsing intentional.</p></header>
+          <div class="flex min-w-0 flex-col gap-4">
+            <section id="sites" class="flex flex-col gap-3" aria-labelledby="sitesTitle">
+              <div class="flex items-center gap-3"><span class="text-[11px] font-bold uppercase tracking-[0.1em] text-blue-600 rounded-md bg-blue-50 px-2 py-1" aria-hidden="true">01</span><h2 id="sitesTitle" class="m-0 text-lg tracking-[-0.02em]">Site filtering</h2></div>
+              <div class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] p-5">
+                <h3 class="mb-1.5 text-base">Allow sites you trust</h3>
+                <p>When global blocking is on, your allowlist keeps trusted sites visible unless an Advanced URL Rule overrides it.</p>
+              </div>
+              <div class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] p-5">
+                <div class="mb-[15px] border-b border-slate-200 pb-[15px]">
+                  <h3 class="mb-1.5 text-base">Add a website</h3>
+                  <p class="m-0 text-xs text-slate-600">Paste a URL or enter a domain. Paths are not included.</p>
+                  <label class="my-2 block text-[13px] font-semibold" for="newWebsite">Website domain</label>
+                  <form id="addWebsiteForm" class="flex flex-wrap items-center gap-3">
+                    <input type="text" id="newWebsite" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px] focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1 flex-[1_1_240px] max-[560px]:basis-full" placeholder="example.com" autocomplete="off" spellcheck="false" aria-describedby="formError" />
+                    <label class="inline-flex items-center gap-2 text-[13px] text-slate-600"><input type="checkbox" id="matchSubdomainsCheckbox" />Include subdomains</label>
+                    <button type="submit" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50 max-[560px]:ml-auto">Add site</button>
+                  </form>
+                  <p id="formError" class="mt-2 text-xs text-red-700 min-h-[1.2em]" role="alert"></p>
+                </div>
+                <div class="flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-2.5"><h3 class="m-0 text-base">Your allowlist</h3><span id="siteCount" class="inline-block rounded-full bg-blue-50 px-[0.45rem] py-[0.1rem] text-[11px] font-semibold text-blue-600" role="status" aria-live="polite">0 sites</span></div>
+                  <button type="button" id="bulkViewBtn" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-900 min-h-[44px] hover:enabled:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50" aria-pressed="false" aria-controls="bulkEditor">Bulk edit</button>
+                </div>
+                <div class="my-3 flex items-center justify-between gap-3 rounded-xl bg-slate-50 p-3 max-[560px]:flex-col max-[560px]:items-stretch"><p class="m-0 text-xs text-slate-600">Build your list faster with categorized defaults.</p><button type="button" id="addDefaultSitesBtn" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-900 min-h-[44px] hover:enabled:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 shrink-0">Add default list</button></div>
+                <div id="siteSearchContainer" class="my-4"><label class="block text-[13px] font-semibold mt-0 mb-2" for="siteSearch">Find a site</label><input type="search" id="siteSearch" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 min-h-[44px] focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1" placeholder="Search domains or categories" autocomplete="off" spellcheck="false" /><p id="searchResults" class="m-0 text-xs text-slate-600" role="status" aria-live="polite" hidden></p></div>
+                <div id="bulkEditor" class="bulk-editor">
+                  <label class="my-2 block text-[13px] font-semibold" for="bulkWebsites">Domains, one per line</label>
+                  <p class="m-0 text-xs text-slate-600" id="bulkHelp">Saving replaces your entire list. Existing matching rules stay unchanged; new domains include subdomains.</p>
+                  <textarea id="bulkWebsites" class="w-full rounded-[10px] border border-slate-200 bg-white px-[0.85rem] py-2.5 text-slate-900 focus:outline-2 focus:outline-[#2563eb] focus:outline-offset-1" aria-describedby="bulkHelp bulkEditorError" placeholder="example.com&#10;another.example" spellcheck="false"></textarea>
+                  <p id="bulkEditorError" class="mt-2 text-xs text-red-700 min-h-[1.2em]" role="alert"></p>
+                  <div class="mt-4 flex justify-end"><button type="button" id="saveBulkWebsitesBtn" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-2.5 py-1.5 text-xs font-semibold text-white min-h-[44px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Save list</button></div>
+                </div>
+                <div id="emptyState" class="rounded-2xl border border-dashed border-slate-200 bg-slate-50 px-4 py-6 text-center text-slate-600">Your allowlist is empty. Media is hidden while global blocking is on unless a URL rule allows it. Add a trusted site above to allow its media.</div>
+                <div id="websitesInnerContainer" class="mt-[15px] flex flex-col gap-[18px]"></div>
+                <div id="removeAllWebsitesContainer" class="border-t border-slate-200 pt-4"><button type="button" id="removeAllWebsitesBtn" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 min-h-[44px] hover:enabled:bg-red-200 disabled:cursor-not-allowed disabled:opacity-50">Remove all sites</button></div>
+              </div>
+            </section>
+            <section id="url-rules" class="flex flex-col gap-3" aria-labelledby="urlRulesTitle">
+              <div class="flex items-center gap-3"><span class="text-[11px] font-bold uppercase tracking-widest text-blue-600 rounded-md bg-blue-50 px-2 py-1" aria-hidden="true">02</span><h2 id="urlRulesTitle" class="m-0 text-lg tracking-[-0.02em]">Advanced URL Rules</h2></div>
+              <form id="urlRulesForm" class="rounded-2xl border border-slate-200 bg-white p-4 text-[13px] [&_select]:min-w-0 [&_select]:border-slate-300 [&_select]:px-2.5 [&_select]:py-1.5 [&_select]:text-xs [&_input[type=text]]:min-w-0 [&_input[type=text]]:border-slate-300 [&_input[type=text]]:px-2.5 [&_input[type=text]]:py-1.5 [&_input[type=text]]:text-xs [&_button]:cursor-pointer [&_button]:px-2.5 [&_button]:py-1.5 [&_button]:text-xs">
+                <p class="m-0">First enabled matching rule wins. Rules override your allowlist while blocking is on.</p>
+                <details class="mt-2 text-xs text-slate-600">
+                  <summary class="cursor-pointer font-semibold">Matching tips</summary>
+                  <ul id="urlRulesHelp" class="mt-2 list-disc space-y-1 pl-4">
+                    <li>AND joins conditions that must all match. OR starts another matching group.</li>
+                    <li>Match on host, path, or query. Host ignores case and keeps www.</li>
+                    <li>Path and query preserve case and URL encoding. Query excludes the leading ?.</li>
+                    <li>Wildcard matches the whole value: * means zero or more characters. Other operators treat * literally.</li>
+                    <li>Rules apply on document loads, not same-document navigation.</li>
+                    <li>The whole list is validated before saving. Errors leave saved rules unchanged.</li>
+                  </ul>
+                </details>
+                <div id="urlRulesList" class="mt-3 flex flex-col gap-3 [&>div>div:first-child]:gap-2 [&>div>div:first-child]:border-b [&>div>div:first-child]:border-slate-200 [&>div>div:first-child]:pb-2 [&>div>div:last-child>div:has(select)]:border [&>div>div:last-child>div:has(select)]:border-slate-200 [&>div>div:last-child>div:has(select)]:p-2.5 [&_select~button]:px-2 [&_select~button]:py-1 [&_select~button]:text-[11px] [&_select~button]:font-semibold [&_select~button]:uppercase [&_select~button:nth-last-child(3)]:border-blue-200 [&_select~button:nth-last-child(3)]:bg-blue-50 [&_select~button:nth-last-child(3)]:text-blue-700 [&_select~button:nth-last-child(3):hover:enabled]:bg-blue-100 [&_select~button:nth-last-child(2)]:border-dashed [&_select~button:nth-last-child(2)]:border-blue-300 [&_select~button:nth-last-child(2)]:text-blue-700 [&_select~button:nth-last-child(2):hover:enabled]:bg-blue-50 [&_select~button:last-child]:border-transparent [&_select~button:last-child]:bg-transparent [&_select~button:last-child]:text-slate-500 [&_select~button:last-child:hover:enabled]:text-red-700"></div>
+                <p id="urlRulesEmpty" class="mt-3 text-xs text-slate-600">No URL rules. Your allowlist decides.</p>
+                <p id="urlRulesError" class="mt-2 text-xs text-red-700 min-h-[1.2em]" role="alert"></p>
+                <div class="mt-3 flex flex-wrap items-center justify-end gap-2 border-t border-slate-200 pt-3">
+                  <button type="button" id="addUrlRule" class="inline-flex cursor-pointer items-center rounded-[10px] border border-slate-200 bg-white px-4 py-2.5 font-semibold text-slate-900 disabled:opacity-50">Add rule</button>
+                  <button type="submit" id="saveUrlRules" class="inline-flex cursor-pointer items-center rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white disabled:opacity-50">Save rules</button>
+                </div>
+              </form>
+            </section>
+            <section id="safesearch" class="flex flex-col gap-3" aria-labelledby="safeSearchTitle">
+              <div class="flex items-center gap-3"><span class="text-[11px] font-bold uppercase tracking-[0.1em] text-blue-600 rounded-md bg-blue-50 px-2 py-1" aria-hidden="true">03</span><h2 id="safeSearchTitle" class="m-0 text-lg tracking-[-0.02em]">SafeSearch</h2></div>
+              <div class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] p-5">
+                <h3 id="safeSearchEnabledTitle" class="mb-1.5 text-base">Cleaner search results</h3>
+                <p>Enforce filtering on supported search engines, independently of media blocking.</p>
+                <div class="mt-3 grid grid-cols-2 gap-[9px] max-[560px]:grid-cols-1" role="radiogroup" aria-labelledby="safeSearchEnabledTitle">
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="safeSearchEnabled" value="true" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">On</span><span class="m-0 text-xs text-slate-600">Enforce filtering on selected engines.</span></span></label>
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="safeSearchEnabled" value="false" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Off</span><span class="m-0 text-xs text-slate-600">Leave search requests unchanged.</span></span></label>
+                </div>
+                <h3 id="filterLevelTitle" class="mb-1.5 text-base mt-4 border-t border-slate-200 pt-[18px]">Filter level</h3>
+                <div class="mt-3 grid grid-cols-2 gap-[9px] max-[560px]:grid-cols-1" role="radiogroup" aria-labelledby="filterLevelTitle">
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="safeSearchLevel" value="strict" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Strict</span><span class="m-0 text-xs text-slate-600">Use the strongest supported filter.</span></span></label>
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="safeSearchLevel" value="moderate" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Moderate</span><span class="m-0 text-xs text-slate-600">Filter explicit results with fewer restrictions.</span></span></label>
+                </div>
+                <h3 id="enginesTitle" class="mb-1.5 text-base mt-4 border-t border-slate-200 pt-[18px]">Search engines</h3>
+                <div class="mt-3 grid grid-cols-2 gap-[9px] max-[560px]:grid-cols-1" role="group" aria-labelledby="enginesTitle">
+                  <label class="inline-flex items-center gap-2 text-[13px] rounded-[10px] border border-slate-200 p-3 text-slate-900"><input type="checkbox" name="safeSearchEngine" value="google" />Google</label>
+                  <label class="inline-flex items-center gap-2 text-[13px] rounded-[10px] border border-slate-200 p-3 text-slate-900"><input type="checkbox" name="safeSearchEngine" value="bing" />Bing</label>
+                  <label class="inline-flex items-center gap-2 text-[13px] rounded-[10px] border border-slate-200 p-3 text-slate-900"><input type="checkbox" name="safeSearchEngine" value="duckduckgo" />DuckDuckGo</label>
+                  <label class="inline-flex items-center gap-2 text-[13px] rounded-[10px] border border-slate-200 p-3 text-slate-900"><input type="checkbox" name="safeSearchEngine" value="brave" />Brave Search</label>
+                </div>
+                <p class="m-0 text-xs text-slate-600" style="margin-top: 16px">Google has one supported filter level. YouTube and Yahoo are excluded because they lack a verified public URL control. Enforcement applies while this policy-installed extension remains enabled.</p>
+              </div>
+            </section>
+            <section id="security" class="flex flex-col gap-3" aria-labelledby="securityTitle">
+              <div class="flex items-center gap-3"><span class="text-[11px] font-bold uppercase tracking-[0.1em] text-blue-600 rounded-md bg-blue-50 px-2 py-1" aria-hidden="true">04</span><h2 id="securityTitle" class="m-0 text-lg tracking-[-0.02em]">Security</h2></div>
+              <div class="rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.03)] p-5">
+                <h3 id="masterLockTitle" class="mb-1.5 text-base">Protect your preferences</h3>
+                <p>Protect settings with a challenge or password. Both locks disable popup actions without changing blocking.</p>
+                <div id="masterLock" class="mt-3 grid grid-cols-3 gap-[9px] max-[560px]:grid-cols-1" role="radiogroup" aria-labelledby="masterLockTitle">
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="masterLock" value="unlocked" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Unlocked</span><span class="m-0 text-xs text-slate-600">Manage settings without a password.</span></span></label>
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="masterLock" value="locked" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Password Lock</span><span class="m-0 text-xs text-slate-600">Require a password to access settings.</span></span></label>
+                  <label class="flex cursor-pointer items-start gap-[9px] rounded-xl border border-slate-200 bg-white p-3 has-[:checked]:border-[#2563eb] has-[:checked]:bg-[#eff6ff] has-[:checked]:shadow-[inset_0_0_0_1px_#2563eb]"><input type="radio" name="masterLock" value="challenge" class="shrink-0 mt-[5px]" /><span class="flex flex-col gap-1"><span class="font-[650]">Challenge Lock</span><span class="m-0 text-xs text-slate-600">Complete questions to access settings.</span></span></label>
+                </div>
+                <div id="challengeSettings" class="mt-4" hidden>
+                  <label for="challengeDifficulty" class="my-2 block text-[13px] font-semibold">Challenge Type</label>
+                  <select id="challengeDifficulty" class="w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2.5 text-slate-900 min-h-[44px]">
+                    <option value="number-parrot">Number Parrot</option>
+                    <option value="simple-addition" selected>Simple Addition</option>
+                    <option value="10-doors">10 Doors</option>
+                  </select>
+                  <label for="challengeQuestions" class="my-2 block text-[13px] font-semibold">Number of questions</label>
+                  <input id="challengeQuestions" type="number" min="1" max="100" step="1" value="10" required class="w-full rounded-[10px] border border-slate-200 bg-white px-3 py-2.5 text-slate-900 min-h-[44px]" aria-describedby="challengeSettingsHelp" />
+                  <p id="challengeSettingsHelp" class="mt-2 text-xs text-slate-600">Easy: copy a number. Normal: simple addition. Hard: 10-door logic puzzle. Choose 1 to 100 questions. Changes save automatically.</p>
+                </div>
+                <p class="mt-4 text-xs text-slate-600">Completing a challenge or entering your password grants access to this settings page only. Choose Unlocked to re-enable popup controls. Challenge Lock adds friction, not password security. Neither lock prevents extension removal.</p>
+                <details class="mt-4 border-t border-slate-200 pt-4 text-xs text-slate-600">
+                  <summary class="cursor-pointer font-semibold text-slate-900">Prevent removal with managed browser policies</summary>
+                  <p class="mt-3">You can use root privileges to apply managed browser policies so you cannot disable or remove the extension through browser controls. To further prevent undoing these policies, require a YubiKey for root access and store it inside a key lock box.</p>
+                  <p class="mt-2">Copy the JSON below into <code>managed_policies.json</code> in your browser's managed policy folder. The location varies by operating system and browser; search for your browser/os managed policies folder location.</p>
+                  <pre class="mt-3 max-w-full overflow-x-auto whitespace-pre rounded-xl border border-slate-200 bg-slate-50 p-3 text-xs text-slate-900" tabindex="0" aria-label="Managed browser policies JSON"><code>{
+  "ExtensionSettings": {
+    "xxxxxx": {
+      "installation_mode": "force_installed",
+      "update_url": "https://clients2.google.com/service/update2/crx",
+      "override_update_url": true
+    }
+  },
+  "MandatoryExtensionsForIncognitoNavigation": [
+    "xxxxxx"
+  ],
+  "BrowserAddPersonEnabled": false,
+  "BrowserGuestModeEnabled": false
+}</code></pre>
+                  <p class="mt-2">Note: Replace every <code>xxxxxx</code> placeholder with your extension ID from Manage extensions &rarr; SinBlocker &rarr; ID.</p>
+                  <p class="mt-2">For Brave, add <code>"IncognitoModeAvailability": 1,</code> before <code>"BrowserAddPersonEnabled"</code> in the JSON above to disable private browsing while <code>MandatoryExtensionsForIncognitoNavigation</code> is not yet available in Brave.</p>
+                </details>
+              </div>
+            </section>
+          </div>
+          <p class="text-center mt-4 text-xs text-slate-600">Based on "Image and Video Blocker" by John Shearin.</p>
+        </main>
+      </div>
+    </div>
+    <div id="toast" class="toast pointer-events-none fixed bottom-4 left-1/2 z-[1000] max-w-[90%] rounded-[10px] px-4 py-2 text-center text-[13px] text-white opacity-0" role="status" aria-live="polite"></div>
+    <script src="domain.js"></script>
+    <script src="url_rules.js"></script>
+    <script src="safesearch.js"></script>
+    <script src="site_categories.js"></script>
+    <script src="default_sites.js"></script>
+    <script src="store.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

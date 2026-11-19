@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "priority": 2,
+    "action": { "type": "allow" },
+    "condition": {
+      "regexFilter": "^https?://([^/]+\\.)?bing\\.com/(search|images/search|videos/search).*[?&]adlt=moderate(?:&|$)",
+      "resourceTypes": ["main_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "addOrReplaceParams": [{ "key": "adlt", "value": "moderate" }]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https?://([^/]+\\.)?bing\\.com/(search|images/search|videos/search)(?:[/?].*)?$",
+      "resourceTypes": ["main_frame"]
+    }
+  }
+]

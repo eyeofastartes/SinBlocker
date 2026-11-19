@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "name": "Image and Video Blocker - SinBlocker",
+  "version": "1.0.0",
+  "description": "Hide images and videos by default. Allow trusted sites via popup, right-click to reveal media, or press Alt+I to toggle globally.",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/16.png",
+      "48": "icons/48.png",
+      "128": "icons/128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "contextMenus",
+    "scripting",
+    "declarativeNetRequest"
+  ],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "safesearch_google",
+        "enabled": false,
+        "path": "rules/safesearch_google.json"
+      },
+      {
+        "id": "safesearch_bing_strict",
+        "enabled": false,
+        "path": "rules/safesearch_bing_strict.json"
+      },
+      {
+        "id": "safesearch_bing_moderate",
+        "enabled": false,
+        "path": "rules/safesearch_bing_moderate.json"
+      },
+      {
+        "id": "safesearch_duckduckgo_strict",
+        "enabled": false,
+        "path": "rules/safesearch_duckduckgo_strict.json"
+      },
+      {
+        "id": "safesearch_duckduckgo_moderate",
+        "enabled": false,
+        "path": "rules/safesearch_duckduckgo_moderate.json"
+      },
+      {
+        "id": "safesearch_brave_strict",
+        "enabled": false,
+        "path": "rules/safesearch_brave_strict.json"
+      },
+      {
+        "id": "safesearch_brave_moderate",
+        "enabled": false,
+        "path": "rules/safesearch_brave_moderate.json"
+      }
+    ]
+  },
+  "commands": {
+    "toggle_image_blocking": {
+      "suggested_key": {
+        "default": "Alt+I"
+      },
+      "description": "Toggle image blocking"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "css": ["styles.css"],
+      "js": ["domain.js", "url_rules.js", "safesearch.js", "site_categories.js", "default_sites.js", "store.js", "content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js"
+  }
+}

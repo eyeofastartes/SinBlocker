@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome - SinBlocker</title>
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body class="min-h-screen">
+    <main class="mx-auto max-w-170 px-6 py-14">
+      <div class="mb-6 flex items-center gap-3"><span class="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-600 text-white" aria-hidden="true"><svg class="block h-6 w-6" viewBox="0 0 203 241" focusable="false"><use href="icons/sinblocker.svg#sinblocker-shield"></use></svg></span><h1 class="m-0 text-base font-bold tracking-[-0.02em] text-slate-900">SinBlocker</h1></div>
+      <h2 class="mt-6 mb-3 leading-[1.2] tracking-[-0.04em] text-[clamp(28px,5vw,40px)] font-[750]">Break free from addiction</h2>
+      <p class="mb-8 text-base">Keep browsing with unwanted images and videos hidden by default outside trusted sites. Even on untrusted sites, you can navigate and read pages without allowing the whole site's media.</p>
+
+      <section class="mb-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_2px_8px_rgba(15,23,42,0.03)] max-[560px]:p-5">
+        <h2 class="mb-3">
+          <span class="mr-2 inline-flex h-7.5 w-7.5 items-center justify-center rounded-[10px] bg-blue-50 text-xs font-bold text-blue-600">1</span>
+          No account, no spying, fully local filtering
+        </h2>
+        <p>
+          Free and maintained by eyeofastartes, with no sign-in, browsing telemetry,
+          or external filtering servers. Filtering works entirely on your device.
+        </p>
+        <p class="mt-3">
+          Blocklists are always one step behind. This starts with media hidden and allows
+          trusted sites instead. That catches new & hidden domains automatically, while
+          built-in exceptions for trusted sites and education domains keep setup simple.
+        </p>
+      </section>
+
+      <section class="mb-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_2px_8px_rgba(15,23,42,0.03)] max-[560px]:p-5">
+        <h2 class="mb-3">
+          <span class="mr-2 inline-flex h-[30px] w-[30px] items-center justify-center rounded-[10px] bg-blue-50 text-xs font-bold text-blue-600">2</span>
+          Lock it down
+        </h2>
+        <p>
+          Protect your preferences with the
+          <button type="button" id="addFirstSiteBtn" class="cursor-pointer font-bold text-blue-600 underline hover:text-blue-700">lock feature</button>
+          in options: choose Password Lock or Challenge Lock to gate settings
+          changes and disable popup controls and the keyboard toggle.
+          Settings also let you enforce SafeSearch independently.
+        </p>
+        <div class="my-3 flex flex-wrap items-center gap-2 text-[13px]">
+          <span class="rounded-full bg-blue-50 px-3 py-1 font-semibold text-blue-600">Turn blocking on (already on)</span>
+          <span class="text-slate-600">→</span>
+          <span class="rounded-full bg-blue-50 px-3 py-1 font-semibold text-blue-600">Media hidden outside trusted sites</span>
+          <span class="text-slate-600">→</span>
+          <span class="rounded-full bg-blue-50 px-3 py-1 font-semibold text-blue-600">Lock your settings</span>
+        </div>
+        <p class="m-0 text-xs text-slate-600">
+          When unlocked, use the toolbar popup to allow the current site or
+          press <strong>Alt+I</strong> to toggle blocking. Locks protect settings,
+          not Chrome's ability to disable or remove the extension.
+        </p>
+      </section>
+
+      <section class="mb-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_2px_8px_rgba(15,23,42,0.03)] max-[560px]:p-5">
+        <h2 class="mb-3">
+          <span class="mr-2 inline-flex h-[30px] w-[30px] items-center justify-center rounded-[10px] bg-blue-50 text-xs font-bold text-blue-600">3</span>
+          Keep your vow
+        </h2>
+        <p>
+          Vow to be sin-free and share it to help others do the same. Post your story on X with <strong>#sinblocker</strong> and tag
+          <a href="https://x.com/sinblocker" class="font-semibold text-blue-600 underline hover:text-blue-700">@sinblocker</a>
+        </p>
+      </section>
+
+      <div class="mt-6 flex flex-wrap gap-3">
+        <button type="button" id="doneBtn" class="inline-flex w-auto cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-transparent bg-blue-600 px-4 py-2.5 font-semibold text-white min-h-[44px] min-w-[160px] hover:enabled:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50">Got it</button>
+      </div>
+    </main>
+
+    <script src="domain.js"></script>
+    <script src="url_rules.js"></script>
+    <script src="safesearch.js"></script>
+    <script src="site_categories.js"></script>
+    <script src="default_sites.js"></script>
+    <script src="store.js"></script>
+    <script src="onboarding.js"></script>
+  </body>
+</html>
